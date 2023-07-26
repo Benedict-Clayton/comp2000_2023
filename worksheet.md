@@ -44,3 +44,15 @@ Modify the application so that instead it prints
 Red vs. Blue
 ~~~~~
 
+
+
+```
+  # Commands:
+  - git clone, add, commit, branch, push, pull, log, stasis
+  
+  - How to create a new branch
+
+  - How to move back to main branch
+  (Use Git checkout XD)
+  
+  Each week we need to make a new branch for your weekly prac.
