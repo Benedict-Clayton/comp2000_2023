@@ -1,15 +1,15 @@
 import java.awt.Color;
+import java.util.ArrayList;
+import java.awt.Polygon;
 
 public class Cat extends Actor {
+
   public Cat(Cell inLoc) {
+    polygons = new ArrayList<>();
     loc = inLoc;
     color = Color.BLUE;
-  }
-}
 
-
-/* 
-~~~~~
+    //Instantiate the Polygons of how they look.
     Polygon ear1 = new Polygon();
     ear1.addPoint(loc.x + 11, loc.y + 5);
     ear1.addPoint(loc.x + 15, loc.y + 15);
@@ -22,39 +22,10 @@ public class Cat extends Actor {
     face.addPoint(loc.x + 5, loc.y + 15);
     face.addPoint(loc.x + 29, loc.y + 15);
     face.addPoint(loc.x + 17, loc.y + 30);
-~~~~~
-*/
 
-
-
-
-
-
-
-
-
-
-
-/*
- public class Cat extends Actor {
-    public Cat() {
-        initPolygons();
-    }
-
-    @Override
-    public void initPolygons() {
-        polygons.clear(); // Clear any existing polygons
-        // Define the polygons that make up the Cat actor
-        // Example: create a triangle for the cat's head
-        int[] xPoints = { 0, 10, 20 };
-        int[] yPoints = { 20, 0, 20 };
-        polygons.add(new Polygon(xPoints, yPoints, 3));
-    }
-
-    @Override
-    protected Color getFillColor() {
-        return Color.BLUE; // Fill color for the Cat actor
-    }
+    //Add the polygons to the array list!
+    polygons.add(ear1);
+    polygons.add(ear2);
+    polygons.add(face);
+  }
 }
-
- */
