@@ -1,32 +1,40 @@
 import java.awt.Color;
-import java.util.ArrayList;
 import java.awt.Polygon;
+import java.util.ArrayList;
 
 public class Dog extends Actor {
-
+  // Dog design courtesy of Sawyer James Rush
   public Dog(Cell inLoc) {
-    polygons = new ArrayList<>();
     loc = inLoc;
     color = Color.YELLOW;
-
-    //Instantiate the Polygons of how they look.
+    display = new ArrayList<Polygon>();
     Polygon ear1 = new Polygon();
     ear1.addPoint(loc.x + 5, loc.y + 5);
-    ear1.addPoint(loc.x + 15, loc.y + 5);
     ear1.addPoint(loc.x + 5, loc.y + 15);
+    ear1.addPoint(loc.x + 10, loc.y + 10);
     Polygon ear2 = new Polygon();
-    ear2.addPoint(loc.x + 20, loc.y + 5);
     ear2.addPoint(loc.x + 30, loc.y + 5);
+    ear2.addPoint(loc.x + 25, loc.y + 10);
     ear2.addPoint(loc.x + 30, loc.y + 15);
     Polygon face = new Polygon();
-    face.addPoint(loc.x + 8, loc.y + 7);
-    face.addPoint(loc.x + 27, loc.y + 7);
-    face.addPoint(loc.x + 27, loc.y + 25);
-    face.addPoint(loc.x + 8, loc.y + 25);
-
-    //Add the polygons to the array list!
-    polygons.add(ear1);
-    polygons.add(ear2);
-    polygons.add(face);
+    face.addPoint(loc.x + 5, loc.y + 5);
+    face.addPoint(loc.x + 30, loc.y + 5);
+    face.addPoint(loc.x + 20, loc.y + 15);
+    face.addPoint(loc.x + 15, loc.y + 15);
+    Polygon body = new Polygon();
+    body.addPoint(loc.x + 15, loc.y + 10);
+    body.addPoint(loc.x + 20, loc.y + 10);
+    body.addPoint(loc.x + 30, loc.y + 30);
+    body.addPoint(loc.x + 5, loc.y + 30);
+    Polygon tail = new Polygon();
+    tail.addPoint(loc.x + 28, loc.y + 26);
+    tail.addPoint(loc.x + 33, loc.y + 20);
+    tail.addPoint(loc.x + 30, loc.y + 30);
+    display.add(face);
+    display.add(ear1);
+    display.add(ear2);
+    display.add(body);
+    display.add(tail);
   }
 }
+>>>>>>> week05
