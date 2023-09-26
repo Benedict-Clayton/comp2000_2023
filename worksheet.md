@@ -192,95 +192,38 @@ Add the following method to the `Grid` class
 
 🤔 Can you find anywhere else this is useful?  🤔🤔 Can you make any other useful _higher order_ methods?
 
-# Task 6
+# Task 16
 
-Our `Cell` class is really a specialised rectangle and the Java API already has a `Rectangle` class.  Have `Cell` inherit from `java.awt.Rectangle` (https://docs.oracle.com/javase/8/docs/api/java/awt/Rectangle.html).  It will be good to call `super` in the `Cell` constructor and to use the `contains` method that comes in `Rectangle` instead of your own.  NB:  The `contains` we wrote was graceful when given a `null` pointer for the point, the one from `Rectangle` is not, you will need to "protect" it in some way.
+Currently, the game loop (in `Main.run`) is running as fast as it can.   This just burns CPU cycles and heats up your computer needlessly.  We need to "fix" the frame-rate so we are not pointlessly burning CPU power. You can do this by asking the current thread to sleep for a period of time using `Thread.sleep`. We want the frame-rate to be about 50 frames per second, that means we need the loop to take 20ms to complete.
 
-# Task 7
+Sleeping a thread throws an `InterruptedException` so that will need a try/catch to deal with that. In fact, we don't care about the thread being interrupted so the catch block should just report the fact it was interrupted, print out a representation (via `toString`) of the exception that was thrown, and continue on as normal.
 
-Define a `Stage` class that can contain one `Grid` object and many `Actor` objects.  There must be three separate actors, each a subclass of an `Actor` superclass and each must have its own `paint` method.  The `paint` method must take a `Graphics` parameter and draw the actor on that graphic.  Have the `paint` method specified in the `Actor` class and have each subclass define it.
+🤔 Can you even cause the exception to be thrown?
 
-Since `Actors`s are drawing themselves, they need to know where they are on the screen so each will have a `Cell` field (that is set in the constructor) indicating where on the grid they are.
+We have made the necessary changes for you, but please go through them to understand what we have done.
 
-Have the program start with 1 grid and 3 actors:
+# Task 17
 
-  * Cat (drawn blue)
-  * Dog (drawn yellow)
-  * Bird (drawn green)
+The team has signed off on the game concept and it is time to start developing the gameplay.  The big-wigs at your company have decided the world needs a new turn-based strategy game in the spirit of famicom-wars, so we will build one of those.  The first step is to put in the turns!  We are going to need:
+  * Characters on different teams (Humans vs Bots)
+  * A way for the player to move their characters
+  * A way for the computer to move the bot characters.
 
-You can place each of these three `Actor` objects in grid locations of your choosing.
+We have made all the changes for you, but please go through each one to understand what we have done.  I.e. your job for this task is to understand the code we have added rather than adding any code of your own.  I strongly encourage you to explore this commit on github or in VSCode using the GitLens addon where you can see exactly what lines were added/deleted/modified in making these changes.
 
-# Task 8
+If you play the game now, you will see there are three stages:
+  * player chooses character
+  * player chooses new location
+  * computer moves its characters
 
-Have a close look at your `Cat`, `Dog` and `Mouse` classes.  If they are anything like mine they are _all the same except for the colour they use_.  This repetition is "a bad thing" because if the same thing is done in three different places, we need to remember that updating one requires us to update all three.
+Notice that the computer move is random every time.  The bot AI (such as it is) asks for all cells that actor can move to, and picks one at random to move to.
 
-Is there a place that you could put all the common parts?
+# Task 18
 
-🤔 Will this work given what you currently have?  If not, what would we need to change?
+We are going to build some (very rudimentary) strategy into this turn-based strategy game.  At the moment, all the actors on the bot team will just move randomly.  Instead, we want their strategy to be determined by _which row they are on_.  If they are on an even-numbered then they should move randomly, but if they are on an odd-numbered row they should _always move to the left-most possible location_.  Note:  if it is not clear yet, you need the strategy pattern so implement this.  Why is is the right pattern for this task?
 
-# Task 9
+🤔 Task 18a
 
-Draw a picture of the inheritance hierarchy you have created.  You should (loosely) use [UML notation](http://umich.edu/~eecs381/handouts/UMLNotationSummary.pdf) for your diagram.  You are using UML In this case, and all through this course, only for "a rough sketch of an idea".
+This task sits to the side of our other tasks. It is an experiment. Even after we get an answer, we won't build upon that answer in later tasks, i.e. we will use the Task 18 answer as the basis for Task 19. However, I think this is the most interesting task so far, it is certainly worth your time.
 
-# Task 10
-
-Did you notice the repetition in the stage paint method?  All three actors have the `paint` method called on them.  In fact, we might later want to have dozens of actors on the stage at any one time, we don't want dozens of calls to `someone.paint(g);`.  What we need is a collection to store all the actors, something like an array that we can put them all in.  Then we can just loop over that array and call  `paint` on every element.  _I think_ we should use an `ArrayList` (https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ArrayList.html).  Notice it is a generic collection?  You will need to use generics to make this work.  Put all the actors in a single array list called `actors` and then loop over this list to paint them.  Once you have done that you might like to add more actors to the stage.
-
-🤔 In my solution, I will declare the actors list as a `List` instead of an `ArrayList`.  Any idea why?  Why does this even work?
-
-# Task 11
-
-Turns out you are not able to use colours to distinguish the different types of actors!  You are going to need to draw little shapes to represent them.  You have been told you can't use images, you have to draw with Java2D primitives so the game can scale up and down as required.  The `Graphics` objects we are painting on know how to draw `Polygon`s (https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Polygon.html) so that is what we are going to use.  However, one polygon is not enough for each actor, we need each to be made of a list of polygons.  We will use `ArrayList` again!  Have the `Color` field of `Actor` changed to a list of polygons and initialise each subclass to an appropriate set of polygons.  You might find the following polygons a useful starting point where `location` is the top-left point of the actor (but I am sure you can do better as well - share your designs on the forums!):
-
-## Cat
-
-~~~~~
-    Polygon ear1 = new Polygon();
-    ear1.addPoint(loc.x + 11, loc.y + 5);
-    ear1.addPoint(loc.x + 15, loc.y + 15);
-    ear1.addPoint(loc.x + 7, loc.y + 15);
-    Polygon ear2 = new Polygon();
-    ear2.addPoint(loc.x + 22, loc.y + 5);
-    ear2.addPoint(loc.x + 26, loc.y + 15);
-    ear2.addPoint(loc.x + 18, loc.y + 15);
-    Polygon face = new Polygon();
-    face.addPoint(loc.x + 5, loc.y + 15);
-    face.addPoint(loc.x + 29, loc.y + 15);
-    face.addPoint(loc.x + 17, loc.y + 30);
-~~~~~
-
-## Dog
-
-~~~~~
-    Polygon ear1 = new Polygon();
-    ear1.addPoint(loc.x + 5, loc.y + 5);
-    ear1.addPoint(loc.x + 15, loc.y + 5);
-    ear1.addPoint(loc.x + 5, loc.y + 15);
-    Polygon ear2 = new Polygon();
-    ear2.addPoint(loc.x + 20, loc.y + 5);
-    ear2.addPoint(loc.x + 30, loc.y + 5);
-    ear2.addPoint(loc.x + 30, loc.y + 15);
-    Polygon face = new Polygon();
-    face.addPoint(loc.x + 8, loc.y + 7);
-    face.addPoint(loc.x + 27, loc.y + 7);
-    face.addPoint(loc.x + 27, loc.y + 25);
-    face.addPoint(loc.x + 8, loc.y + 25);
-~~~~~
-
-## Bird
-
-~~~~~
-    Polygon wing1 = new Polygon();
-    wing1.addPoint(loc.x + 5, loc.y + 5);
-    wing1.addPoint(loc.x + 15, loc.y + 17);
-    wing1.addPoint(loc.x + 5, loc.y + 17);
-    Polygon wing2 = new Polygon();
-    wing2.addPoint(loc.x + 30, loc.y + 5);
-    wing2.addPoint(loc.x + 20, loc.y + 17);
-    wing2.addPoint(loc.x + 30, loc.y + 17);
-    Polygon body = new Polygon();
-    body.addPoint(loc.x + 15, loc.y + 10);
-    body.addPoint(loc.x + 20, loc.y + 10);
-    body.addPoint(loc.x + 20, loc.y + 25);
-    body.addPoint(loc.x + 15, loc.y + 25);
-~~~~~
+Can we make the strategy pattern we just created disappear with lambda expressions? More concretely, can I get rid of the strategy interface and its subclasses and still have dynamic behaviour at run-time? If so, implement it and discuss the pros and cons of this approach compared to a "real" strategy pattern.
