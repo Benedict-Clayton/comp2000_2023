@@ -1,24 +1,20 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class Horse extends Actor {
-  private Motif horse;
+  public Motif horse;
 
   public Horse(Cell inLoc, boolean isHuman) {
-    super(inLoc, Color.RED, isHuman, 4);
+    initActor(inLoc, Color.RED, isHuman, 4);
     horse = new Motif("assets/Chess_tile_nl.png");
   }
 
   protected void setPoly() {
   }
 
-  public void paint(){
+  public void paint(Graphics g){
     Float phase = 0.5f;
-    horse.draw(g, labelIndent, yLoc, Color.getHSBColor(phase, 0.5f, 1.0f));
+    horse.draw(g, getLocation().x, getLocation().y, Color.getHSBColor(phase, 0.5f, 1.0f));
   }
 
 
