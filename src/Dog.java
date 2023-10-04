@@ -39,4 +39,4 @@ public class Dog extends Actor {
     display.add(tail);
   }
 }
->>>>>>> week05
+
